@@ -82,7 +82,7 @@ export default class DateRangePicker extends PureComponent {
   }
 
   onFocus = (event) => {
-    const { disabled, onFocus } = this.props;
+    const { disabled, onFocus, disableCalendar } = this.props;
 
     if (onFocus) {
       onFocus(event);
@@ -92,8 +92,9 @@ export default class DateRangePicker extends PureComponent {
     if (disabled) {
       return;
     }
-
-    this.openCalendar();
+    if (disableCalendar === false) {
+      this.openCalendar();
+    }
   }
 
   openCalendar = () => {
@@ -217,7 +218,7 @@ export default class DateRangePicker extends PureComponent {
             {clearIcon}
           </button>
         )}
-        {calendarIcon !== null && !disableCalendar && (
+        {calendarIcon !== null && (
           <button
             aria-label={calendarAriaLabel}
             className={`${baseClassName}__calendar-button ${baseClassName}__button`}
@@ -235,10 +236,10 @@ export default class DateRangePicker extends PureComponent {
   }
 
   renderCalendar() {
-    const { disableCalendar } = this.props;
+    const { disableCalendar, calendarIcon } = this.props;
     const { isOpen } = this.state;
 
-    if (isOpen === null || disableCalendar) {
+    if (isOpen === null || (disableCalendar && calendarIcon === null)) {
       return null;
     }
 
